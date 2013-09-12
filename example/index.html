@@ -9,10 +9,18 @@
   <link rel="stylesheet" type="text/css" href="../src/jquery.chineserp.css">
 </head>
 <body>
-<a class="regionpicker" href="javascript:;">Pick it out</a><p>&nbsp;</p>
+<a class="regionpicker" href="javascript:;">Pick it out</a>
+<p>Picked: <span id="region"></span></p>
 <script type="text/javascript">
   $(function(){
-    $('.regionpicker').regionPicker({remote: '/example', defaultValue: '340824'});
+    $('.regionpicker').regionPicker({
+      remote: '/example',
+      defaultValue: window.location.search.substr(1) || '310105',
+      picked: function(regions, picker){
+        var n = regions.map(function(r){ return r.n + ' ('+ r.a +')'; }).join(' > ');
+        $('#region').text(n + ', ' + regions[regions.length-1].i);
+      }
+    });
   });
 </script>
 </body>

@@ -97,10 +97,7 @@
       var arr = [];
       arr[0] = this.first(function(d){
         return d.i == id;
-      });
-      if(arr[0]) return arr;
-
-      arr[0] = this.first(function(d){
+      }) || this.first(function(d){
         return d.i == id.substr(0,4) + '00';
       }) || this.collection[0];
 
@@ -231,19 +228,36 @@
       f([]);
     },
 
+    _pickedCollections: function(regions){
+      if(!regions || !regions.map){
+        return [];
+      }
+      var collections = [];
+      if(regions[0]){
+        collections.push(this.proxy.collection('index').collection);
+      }
+      if(regions[1]){
+       collections.push(this.proxy.collection(regions[1].i).collection); 
+      }
+      if(regions[2] && regions[1].c){
+       collections.push(regions[1].c); 
+      }
+      return collections;
+    },
+
     _pickById: function(id, options, f){
-      var proxy = this.proxy, regions = [];
+      var self = this, proxy = this.proxy, regions = [];
       regions[0] = proxy.indices().first(function(r){
         return r.i == id.substr(0,2) + '0000';
       });
       proxy.load(id, function(c){
         regions = regions.concat(c.findById(id,options));
-        f(regions);
+        f(regions, self._pickedCollections(regions));
       });
     },
 
     _pickByNames: function(names, options, f){
-      var proxy = this.proxy, regions = [];
+      var self = this, proxy = this.proxy, regions = [];
       regions[0] = proxy.indices().first(function(r){
         return r.n == names[0];
       });
@@ -253,7 +267,7 @@
       }
       proxy.load(regions[0].i, function(c){
         regions = regions.concat(c.findByNames(names[1],names[2],options));
-        f(regions);
+        f(regions, self._pickedCollections(regions));
       });
     }
   };
