@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Chinese region picker Test Suite</title>
+  <script src="../libs/jquery/jquery.js"></script>
+  <script src="../src/chineserp.js"></script>
+  <script src="../src/jquery.chineserp.js"></script>
+  <link rel="stylesheet" type="text/css" href="../src/jquery.chineserp.css">
+</head>
+<body>
+<a class="regionpicker" href="javascript:;">Pick it out</a><p>&nbsp;</p>
+<script type="text/javascript">
+  $(function(){
+    $('.regionpicker').regionPicker({remote: '/example', defaultValue: '340824'});
+  });
+</script>
+</body>
+</html>
