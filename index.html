@@ -5,7 +5,9 @@
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Chineserp : Chinese region picker, Support jQuery, Zepto, Prototype Ajax API." />
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="javascripts/chineserp.min.js"></script>
+    <script src="javascripts/main.js"></script>
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
     <title>Chineserp</title>
@@ -31,6 +33,20 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
+        <div style="width:600px;padding:20px;border:1px solid #EEE;margin:50px auto;font-size:85%;">
+          <h1>Choose one region: 
+            <select id="pick" style="font-size:16px;padding:5px;">
+              <option></option>
+              <option value="110105">北京.朝阳区</option>
+              <option value="310115">上海.浦东新区</option>
+              <option value="310115">南京.下关区</option>
+              <option value="460200">海南.三亚</option>
+              <option value="710000">台湾</option>
+            </select>
+          </h1>
+          <ul id="picked"></ul>
+        </div>
+
         <h1>
 <a name="chinese-region-picker" class="anchor" href="#chinese-region-picker"><span class="octicon octicon-link"></span></a>Chinese region picker</h1>
 
@@ -94,7 +110,6 @@
             pageTracker._trackPageview();
             } catch(err) {}
           </script>
-
 
   </body>
 </html>
