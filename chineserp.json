@@ -20,8 +20,5 @@
       "url": "https://github.com/xixilive/chineserp/blob/master/LICENSE-MIT"
     }
   ],
-  "dependencies": {
-    "jquery": ">=1.5 <=1.9.1"
-  },
-  "keywords": []
+  "keywords": ["chinese", "region", "picker", "selector"]
 }

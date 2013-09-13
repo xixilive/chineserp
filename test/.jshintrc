@@ -12,7 +12,7 @@
   "eqnull": true,
   "browser": true,
   "predef": [
-    "jQuery",
+    "ChineseRegion",
     "QUnit",
     "module",
     "test",

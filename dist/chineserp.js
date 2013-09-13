@@ -1,33 +1,6 @@
-/*
- * chineserp
- * https://github.com/xixilive/chineserp
- *
- * Copyright (c) 2013 xixilive
- * Licensed under the MIT license.
- * ==================================================
- *             Chinese Region Picker
- * ==================================================
- * data struct of region:
- *  i: ID, the unique code of region
- *  n: Name, the fullname of region
- *  a: Alias, the simplfied name of region
- *  b: Abbr, the simplfied chinese Pinyin of region
- *  y: Pinyin, the chinese Pinyin of region
- *  z: Zipcode, the post-code of region
- *
- *  the data provided by https://github.com/xixilive/chinese_region_db project
- *  
- *  Example:
- *  var regionPicker = new ChineseRegion.RegionPicker({
-      remote: '/json_files_path',
-      initialize: function(picker){
-        picker.pick('310102', function(regions, collections){
-          //whatever you want to do
-        })
-      }
-    });
- */
-
+/*! Chinese region picker - v0.0.1 - 2013-09-13
+* https://github.com/xixilive/chineserp
+* Copyright (c) 2013 xixilive; Licensed MIT */
 (function($) {
   'use strict';
 
