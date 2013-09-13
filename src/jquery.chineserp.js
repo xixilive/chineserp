@@ -52,6 +52,9 @@
     }
   };
 
+  /**
+  * 
+  */
   var RegionPicker = function(el, options){
     this.el = el;
     this.options = $.extend({}, options || {});

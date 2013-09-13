@@ -16,6 +16,9 @@
     $('.regionpicker').regionPicker({
       remote: '/example',
       defaultValue: window.location.search.substr(1) || '310105',
+      initialized: function(picker, regions, collections){
+        console.log(regions);
+      },
       picked: function(regions, picker){
         var n = regions.map(function(r){ return r.n + ' ('+ r.a +')'; }).join(' > ');
         $('#region').text(n + ', ' + regions[regions.length-1].i);

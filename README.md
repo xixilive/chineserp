@@ -1,24 +1,10 @@
 # Chinese region picker - WIP
 
-Chinese region picker plugin for jquery
+Chinese region picker, and a plugin for jquery
 
 ## Getting Started
-Download the [production version][min] or the [development version][max].
 
-[min]: https://raw.github.com/xixilive/chineserp/master/dist/chineserp.min.js
-[max]: https://raw.github.com/xixilive/chineserp/master/dist/chineserp.js
-
-In your web page:
-
-```html
-<script src="jquery.js"></script>
-<script src="dist/chineserp.min.js"></script>
-<script>
-jQuery(function($) {
-  
-});
-</script>
-```
+NOTE: this project is woring in progress.
 
 ## Documentation
 _(Coming soon)_

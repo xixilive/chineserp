@@ -4,7 +4,8 @@
  *
  * Copyright (c) 2013 xixilive
  * Licensed under the MIT license.
- * 
+ * ==================================================
+ *             Chinese Region Picker
  * ==================================================
  * data struct of region:
  *  i: ID, the unique code of region
@@ -13,12 +14,24 @@
  *  b: Abbr, the simplfied chinese Pinyin of region
  *  y: Pinyin, the chinese Pinyin of region
  *  z: Zipcode, the post-code of region
+ *
+ *  the data provided by https://github.com/xixilive/chinese_region_db project
+ *  
+ *  Example:
+ *  var regionPicker = new ChineseRegion.RegionPicker({
+      remote: '/json_files_path',
+      initialize: function(picker){
+        picker.pick('310102', function(regions, collections){
+          //whatever you want to do
+        })
+      }
+    });
  */
 
 (function($) {
   'use strict';
 
-  var root = this
+  var root = this;
   var ChineseRegion = root.ChineseRegion = {};
 
   ChineseRegion.$ = $;
@@ -49,12 +62,16 @@
     return ChineseRegion.$.getJSON.apply(ChineseRegion.$, arguments);
   };
 
-  /*
-    RegionCollection
+  /**
+    A collection that contains all cities and suburbs of a province
+    @param {Array} data, the data to be stored
+    @param {String} name, use as collection name
+    @return RegionCollection object
+    @example: new RegionCollection([...], 'collection1')
   */
-  var RegionCollection = ChineseRegion.RegionCollection = function(data, id){
+  var RegionCollection = ChineseRegion.RegionCollection = function(data, name){
     this.collection = data || [];
-    this.name = id;
+    this.name = name;
     return this;
   };
 
@@ -73,10 +90,19 @@
       return this.select(f)[0];
     },
 
-    //find by names
-    //options: 
-    //  key: the key to find
-    findByNames: function(a,b, options){
+    /**
+      Find regions by region names in current RegionCollection object
+      by default, this function will select the first element in array when expect region is missing.
+      @param {String} a, the first region name
+      @param {String} b, the second region name
+      @param {String} options, your can specify which key to find in object
+      @return {Array}
+      @exapmle: findByNames('上海市','杨浦区') should return [{n:上海市,...}, {n:杨浦区,...}],
+                findByNames('江苏省','南京市','玄武区') should return [{n:江苏省,...}, {n:南京市,...}, {n:玄武区,...}],
+                findByNames('上海','崇明', {key: 'a'}) should return [{n:上海市,...}, {n:崇明县,...}],
+                findByNames('上海市','卢湾区') should return [{n:上海市,...}, {n:黄浦区,...}], because '卢湾区' is not exists
+    */
+    findByNames: function(a, b, options){
       options = options || {};
       options.key = options.key || 'n'; //default to find by region name
 
@@ -93,7 +119,15 @@
       return arr;
     },
 
-    findById: function(id, options){
+    /**
+      Find regions by region ID in current RegionCollection object
+      by default, this function will select the first element in array when expect region is missing.
+      @param {String} id
+      @return {Array}
+      @exapmle: findById('310105') should return [{i:310000,...}, {i:310105,...}] of Shanghai city,
+                findById('310103') should return [{i:310000,...}, {i:310101,...}], because '310103' is not exists
+    */
+    findById: function(id){
       var arr = [];
       arr[0] = this.first(function(d){
         return d.i == id;
@@ -109,7 +143,13 @@
   };
 
   /*
-    DataProxy
+    DataProxy, load data from remote json files, and cache these files
+    the callback function will be call with 2 arguments, the first one is DataProxy object,
+    and another one is RegionCollection object
+    @param {String} remote, the URI path of remote files
+    @param {Function} init, callback function
+    @return {Object} DataProxy object
+    @example: new DataProxy('/remote/', function(proxy, collection){})
   */
   var DataProxy = ChineseRegion.DataProxy = function(remote, init){
     var self = this;
@@ -123,18 +163,45 @@
   };
 
   DataProxy.prototype = {
+    /**
+      Convert region ID to special format, in order to match the json filename
+      @param {String} id
+      @return {String}
+      @example: _index('310105') should get '310000'
+    */
     _index: function(id){
       return id.replace(/\d{4}$/,'0000');
     },
 
+    /**
+      Convert region ID to special cache-id format, in order to cache a collection totally
+      @param {String} id
+      @return {String}
+      @example: _cacheid('310105') should get 'cached_310000'
+    */
     _cacheid: function(id){
       return 'cached_' + this._index(id);
     },
 
+    /**
+      Convert region ID to related json-file's url
+      @param {String} id
+      @return {String}
+      @example: _url('310105') should get '/a_remote_path/310105.json'
+    */
     _url: function(id){
       return this._remote + this._index(id) + '.json';
     },
 
+    /**
+      Load data asynchoronize, the callback function will call with 2 arguments, 
+      the first is RegionCollection object, 
+      and the second is DataProxy object
+
+      @param {String} id
+      @param {Function} callback function, 
+      @exapmle load('310105', function(collection, proxy){})
+    */
     load: function(id, f){
       var self = this, cache_id = this._cacheid(id);
       if(typeof f != 'function') f = function(){};
@@ -150,6 +217,10 @@
       });
     },
 
+    /**
+      Provide cached collections
+      @return {Array}
+    */
     collections: function(){
       var coll = [];
       for(var i in this._caches){
@@ -158,25 +229,34 @@
       return coll;
     },
 
+    /**
+      Get a collection named the specified argument
+      @param {String} value
+      @return {Array}
+      @example: collection('index'), collection('310105')
+    */
     collection: function(value){
       var cid = this._cacheid(value);
       return this.collections().filter(function(c){ return c.name == cid; })[0];
     },
 
+    /**
+      Provide the index collection
+      @return {Array}
+    */
     indices: function(){
       return this.collection('index');
     }
   };
 
   /*
-    RegionPicker
-    options:
-      remote: the json files path
-    Example:
-    new RegionPicker({remote: '/', initialized: function(picker){
+    RegionPicker, the initialized callback will be call with RegionPicker object
+    @param {Object} options
+    @example:  new RegionPicker({remote: '/', initialized: function(picker){
       picker.pick('310102', function(regions){ console.log( regions.map(function(d){ return d.n; }).join(" > "); ); })
       picker.pick('PROVINCE,CITY,SUBURB', function(regions){ console.log( regions.map(function(d){ return d.n; }).join(" > "); ); })
     }})
+    @return RegionPicker object
   */
   var RegionPicker = ChineseRegion.RegionPicker = function(options){
     var self = this;
@@ -193,8 +273,15 @@
       if(typeof this.options.initialized == 'function') this.options.initialized(this);
     },
 
-    //pick(value, callback)
-    //pick(value, options, callback)
+    /**
+      pick up a specified region
+      @param {String | Array} value
+      @param {Object} options
+      @param {Function} callback
+      @return undefined
+      @example pick(value, callback)
+      @example pick(value, options, callback)
+    */
     pick: function(){
       var value = arguments[0], options = {}, f;
 
@@ -218,16 +305,21 @@
       }
 
       if(/^\d+$/.test(value)){ //pickById
-        this._pickById(value, options, f);
+        this._pickById(value, f);
         return;
       }else{ //pickByNames
-        if(typeof value == 'string') value = value.split(/[,|\s]+/,3);
+        if(typeof value == 'string') value = value.split(/[,\s]+/,3);
         this._pickByNames(value, options, f);
         return;
       }
       f([]);
     },
 
+    /**
+      Provide array that is the super-collection of regions
+      @param {Array} regions
+      @return {Array} a array contains 3 or less elements, in same order as the elements in regions argument
+    */
     _pickedCollections: function(regions){
       if(!regions || !regions.map){
         return [];
@@ -245,17 +337,28 @@
       return collections;
     },
 
-    _pickById: function(id, options, f){
+    /**
+      Pickup regions via specified ID
+      @param {String} id
+      @param {Function} f, a callback function that will be call when regions have picked
+    */
+    _pickById: function(id, f){
       var self = this, proxy = this.proxy, regions = [];
       regions[0] = proxy.indices().first(function(r){
         return r.i == id.substr(0,2) + '0000';
       });
       proxy.load(id, function(c){
-        regions = regions.concat(c.findById(id,options));
+        regions = regions.concat(c.findById(id));
         f(regions, self._pickedCollections(regions));
       });
     },
 
+    /**
+      Pickup a region via specified string seperated with comma or space
+      @param {String} names
+      @param {Object} options
+      @param {Function} f, a callback function that will be call when regions have picked
+    */
     _pickByNames: function(names, options, f){
       var self = this, proxy = this.proxy, regions = [];
       regions[0] = proxy.indices().first(function(r){
