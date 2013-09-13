@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Chineserp : Chinese region picker, Support jQuery, Zepto, Prototype Ajax API." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Chineserp</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/xixilive/chineserp">View on GitHub</a>
+
+          <h1 id="project_title">Chineserp</h1>
+          <h2 id="project_tagline">Chinese region picker, Support jQuery, Zepto, Prototype Ajax API.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/xixilive/chineserp/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/xixilive/chineserp/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="chinese-region-picker" class="anchor" href="#chinese-region-picker"><span class="octicon octicon-link"></span></a>Chinese region picker</h1>
+
+<p>Chinese region picker, data provided by <a href="https://github.com/xixilive/chinese_regions_db">chinese_regions_db</a></p>
+
+<h2>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<p>Download the <a href="https://raw.github.com/xixilive/chineserp/master/dist/chineserp.min.js">production version</a> or the <a href="https://raw.github.com/xixilive/chineserp/master/dist/chineserp.js">development version</a>.</p>
+
+<p>Checkout <a href="https://github.com/xixilive/chinese_regions_db">chinese_regions_db</a> project, and dump the database into json format(visit the project for details), and Copy these JSON files into your project.</p>
+
+<h2>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h2>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">regionPicker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ChineseRegion</span><span class="p">.</span><span class="nx">RegionPicker</span><span class="p">({</span>
+  <span class="nx">remote</span><span class="o">:</span> <span class="s1">'/json_files_path'</span><span class="p">,</span>
+  <span class="nx">initialize</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">picker</span><span class="p">){</span>
+    <span class="nx">picker</span><span class="p">.</span><span class="nx">pick</span><span class="p">(</span><span class="s1">'310102'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">regions</span><span class="p">,</span> <span class="nx">collections</span><span class="p">){</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">regions</span><span class="p">,</span> <span class="nx">collections</span><span class="p">);</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="run-the-examples" class="anchor" href="#run-the-examples"><span class="octicon octicon-link"></span></a>Run the examples:</h2>
+
+<p>Checkout this project and install dependencies:</p>
+
+<pre lang="node"><code>cd chineserp &amp; npm install
+</code></pre>
+
+<p>and type following command in your peoject directory to start a server:</p>
+
+<pre><code>node examples/server.js
+</code></pre>
+
+<p>then, open the examples page in your browser</p>
+
+<pre><code>http://localhost:8888/examples
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Chineserp maintained by <a href="https://github.com/xixilive">xixilive</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-35506246-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
