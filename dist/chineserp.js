@@ -1,8 +1,45 @@
-/*! Chinese region picker - v0.0.1 - 2013-09-13
+/*! Chinese region picker - v0.0.1 - 2013-09-16
 * https://github.com/xixilive/chineserp
 * Copyright (c) 2013 xixilive; Licensed MIT */
 (function($) {
   'use strict';
+
+  //ECMA262-5 methods: Array#forEach
+  if(!('forEach' in Array.prototype)) {
+    Array.prototype.forEach = function(action, that) {
+      for (var i= 0, n = this.length; i<n; i++){
+        if (i in this){
+          action.call(that, this[i], i, this);
+        }
+      }
+    };
+  }
+
+  //ECMA262-5 methods: Array#map
+  if(!('map' in Array.prototype)) {
+    Array.prototype.map = function(mapper, that) {
+      var other= new Array(this.length);
+      for (var i = 0, n = this.length; i<n; i++){
+        if (i in this){
+          other[i] = mapper.call(that, this[i], i, this);
+        }
+      }
+      return other;
+    };
+  }
+
+  //ECMA262-5 methods: Array#filter
+  if(!('filter' in Array.prototype)){
+    Array.prototype.filter = function(filter, that) {
+      var other= [], v;
+      for (var i=0, n= this.length; i<n; i++){
+        if (i in this && filter.call(that, v= this[i], i, this)){
+          other.push(v);
+        }
+      }
+      return other;
+    };
+  }
 
   var root = this;
   var ChineseRegion = root.ChineseRegion = {};
