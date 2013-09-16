@@ -34,9 +34,9 @@
   //ECMA262-5 methods: Array#indexOf
   if (!('indexOf' in Array.prototype)) {
     Array.prototype.indexOf= function(find, i) {
-      if (i === undefined) i= 0;
-      if (i<0) i+= this.length;
-      if (i<0) i= 0;
+      if (i === undefined){ i= 0; }
+      if (i<0){ i+= this.length; }
+      if (i<0){ i= 0; }
       for (var n= this.length; i<n; i++){
         if (i in this && this[i]===find){
           return i;
