@@ -87,6 +87,7 @@
   var ChineseRegion = root.ChineseRegion = {};
 
   ChineseRegion.$ = $;
+  ChineseRegion._caches = {};
 
   // Prototype getJSON wrapper
   if(ChineseRegion.$ && !ChineseRegion.$.getJSON && root.Ajax){
@@ -210,7 +211,6 @@
   */
   var DataProxy = ChineseRegion.DataProxy = function(remote, init){
     this._remote = (remote  + '/').replace(/\/+/g,'/');
-    this._caches = {};
 
     this.load('index', function(collection, proxy){
       if(ChineseRegion.ifn(init)){ init(proxy, collection); }
@@ -262,13 +262,13 @@
       var self = this, cache_id = this._cacheid(id);
       if(!ChineseRegion.ifn(f)){ f = function(){}; }
 
-      if(this._caches[cache_id]){
-        f(new RegionCollection(this._caches[cache_id], cache_id),self);
+      if(ChineseRegion._caches[cache_id]){
+        f(new RegionCollection(ChineseRegion._caches[cache_id], cache_id),self);
         return;
       }
 
       ChineseRegion.getJSON(this._url(id), function(data){
-        self._caches[cache_id] = data;
+        ChineseRegion._caches[cache_id] = data;
         f(new RegionCollection(data, cache_id), self);
       });
     },
@@ -279,8 +279,8 @@
     */
     collections: function(){
       var coll = [];
-      for(var i in this._caches){
-        coll.push(new RegionCollection(this._caches[i], i));
+      for(var i in ChineseRegion._caches){
+        coll.push(new RegionCollection(ChineseRegion._caches[i], i));
       }
       return coll;
     },

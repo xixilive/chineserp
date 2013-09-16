@@ -73,6 +73,7 @@
   //ChineseRegion.DataProxy
   module('ChineseRegion.DataProxy',{
     setup: function(){
+      ChineseRegion._caches = {}; //reset global caches
       this.proxy = new ChineseRegion.DataProxy('/');
     }
   });
