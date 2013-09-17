@@ -7,7 +7,7 @@ $(function(){
         if(!$(this).val()){
           return;
         }
-        this.attr('disabled', true);
+        $('#pick').attr('disabled', true);
         picker.pick($(this).val(), function(regions){
           $('#pick').attr('disabled', false);
           $('#picked').append('<h3>'+ (regions.map(function(r){ return r.n; }).join(' > ')) +'</h3>');
