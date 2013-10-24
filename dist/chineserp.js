@@ -1,4 +1,4 @@
-/*! Chinese region picker - v0.0.1 - 2013-09-16
+/*! Chinese region picker - v0.0.1 - 2013-10-24
 * https://github.com/xixilive/chineserp
 * Copyright (c) 2013 xixilive; Licensed MIT */
 (function($) {
